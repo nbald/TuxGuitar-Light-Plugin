@@ -4,17 +4,17 @@ import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Shell;
 
-import org.herac.tuxguitar.app.TuxGuitar;
-import org.herac.tuxguitar.app.transport.TGTransport;
-import org.herac.tuxguitar.app.transport.TGTransportListener;
+import org.herac.tuxguitar.gui.TuxGuitar;
+import org.herac.tuxguitar.gui.transport.TGTransport;
+import org.herac.tuxguitar.gui.transport.TGTransportListener;
 import org.herac.tuxguitar.player.base.MidiPlayerListener;
 
-import org.herac.tuxguitar.app.editors.TGExternalBeatViewerListener;
-import org.herac.tuxguitar.app.editors.TGRedrawListener;
-import org.herac.tuxguitar.app.editors.TGUpdateListener;
+import org.herac.tuxguitar.gui.editors.TGExternalBeatViewerListener;
+import org.herac.tuxguitar.gui.editors.TGRedrawListener;
+import org.herac.tuxguitar.gui.editors.TGUpdateListener;
 
-import org.herac.tuxguitar.app.system.plugins.TGPluginSetup;
-import org.herac.tuxguitar.app.system.plugins.base.TGPluginAdapter;
+import org.herac.tuxguitar.gui.system.plugins.TGPluginSetup;
+import org.herac.tuxguitar.gui.system.plugins.base.TGPluginAdapter;
 import org.herac.tuxguitar.song.models.TGBeat;
 import org.herac.tuxguitar.song.models.TGNote;
 import org.herac.tuxguitar.song.models.TGVoice;
