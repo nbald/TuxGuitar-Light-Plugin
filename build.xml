@@ -12,7 +12,8 @@
 	<path id="class.path">
 		<pathelement location="${path.tuxguitar}"/>
 		<pathelement location="${path.swt}"/>
-		<pathelement location="${path.rxtx}"/>
+		<pathelement location="${path.libusb}"/>
+		<pathelement location="${path.jack}"/>
 	</path >
 
 	<target name="init" depends="clean">

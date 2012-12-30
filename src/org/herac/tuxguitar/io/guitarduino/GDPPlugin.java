@@ -1,6 +1,7 @@
 package org.herac.tuxguitar.io.guitarduino;
 
 import java.util.Iterator;
+import java.io.*;
 
 import org.eclipse.swt.widgets.Shell;
 
@@ -27,7 +28,8 @@ public class GDPPlugin extends TGPluginAdapter implements TGPluginSetup, TGExter
 	private TGBeat beat;
 	private TGBeat externalBeat;
 		
-	private GDPSerialCommunicator serial;
+	private GDPUSB usb;
+	private FretLightLeds leds;
 	
 	public GDPPlugin() {
 	}
@@ -42,19 +44,15 @@ public class GDPPlugin extends TGPluginAdapter implements TGPluginSetup, TGExter
 		//TuxGuitar.instance().getTransport()
 		System.out.println("guitarduino init");
 		
-		this.serial = new GDPSerialCommunicator();
-        this.serial.connect();
-        if (this.serial.getConnected() == true) {
-                if (this.serial.initIOStream() == true) {
-                        this.serial.initListener();
-                }
-        }
+		usb = new GDPUSB();
+		leds = new FretLightLeds();
+		//wfb = new WaitForBeat();
 	}
 	
 	public void close() {
-		if (serial != null) {
+		/*if (serial != null) {
 			this.serial.disconnect();
-		}
+		}*/
 	}
 	
 	public void setEnabled(boolean enabled) {
@@ -102,9 +100,9 @@ public class GDPPlugin extends TGPluginAdapter implements TGPluginSetup, TGExter
 	
 	public void doRedraw(int type) {
 		if( type == TGRedrawListener.NORMAL ){
-//
+
 		}else if( type == TGRedrawListener.PLAYING_NEW_BEAT ){
-			//System.out.println("doRedraw() BEAT");
+		  
 		}
 		setBeat();
 		this.dumpBeats(this.beat);
@@ -131,33 +129,30 @@ public class GDPPlugin extends TGPluginAdapter implements TGPluginSetup, TGExter
 	
 	
 	private void dumpBeats(TGBeat beat) {
-		int[] ledArray =  {}; //12 bytes, 2 por cuerda
-		int pows[] = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 
-						512, 1024, 2048, 4096, 8192, 16384, 32768 };
-		boolean muestro = false;
-		if (beat == null){
-			return;
-		}
-		System.out.println("BEAT idx = " + this.beatIdx);
+	
+	  boolean muestro = false;
+	  if (beat == null){
+	    return;
+	  }
+	  //System.out.println("BEAT idx = " + this.beatIdx);
 
-        //1er byte del 16-9, segundo byte de 8-1
-        ledArray = new int[] { 0,0,0,0,0,0};
+	    leds.clearBuffer();
 
-		for(int v = 0; v < beat.countVoices(); v ++){
-			TGVoice voice = beat.getVoice( v );
-			Iterator it = voice.getNotes().iterator();
-			while (it.hasNext()) {
-				TGNote note = (TGNote) it.next();
-				int fretIndex = note.getValue();
-				int stringIndex = note.getString() - 1;
-				//el traste 0 es al aire - ahora lo ignoramos
-				System.out.println("cuerda " + stringIndex + " traste " + fretIndex );
-				if(fretIndex != 0) {
-					ledArray[stringIndex] += pows[(fretIndex-1)]; 
-				}
-			}
-        }
-		if (serial != null) {
+	    for(int v = 0; v < beat.countVoices(); v ++){
+	      TGVoice voice = beat.getVoice( v );
+	      Iterator it = voice.getNotes().iterator();
+	      while (it.hasNext()) {
+		TGNote note = (TGNote) it.next();
+		int fretIndex = note.getValue();
+		int stringIndex = note.getString() - 1;
+		//System.out.println("cuerda " + stringIndex + " traste " + fretIndex );
+		leds.setOn(stringIndex, fretIndex);
+	      }
+	    }
+	    
+	    if (usb.isReady()) usb.send(leds.getBuffer());
+	    
+	/*if (serial != null) {
             //int pos=0;
             this.serial.writeData('N'); //N ascii char
             //for (int l : ledArray) {
@@ -168,8 +163,7 @@ public class GDPPlugin extends TGPluginAdapter implements TGPluginSetup, TGExter
             }
             //this.serial.writeData(GDPSerialCommunicator.NEW_LINE_ASCII);
             this.serial.flush();
-        }
-
+        }*/
 
 		this.beatIdx++;
 	}

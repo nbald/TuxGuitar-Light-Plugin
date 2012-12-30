@@ -56,15 +56,15 @@ public class GDPSettingsUtil {
 	}
 	
 	public void load(){
-		System.out.println("settings load()");
+		/*System.out.println("settings load()");
 		String portDefault = getConfig().getStringConfigValue(KEY_PORT, GDPSettings.DEFAULT_SERIAL_PORT);
 		System.out.println("load() port: " + portDefault);
-		this.settings.setPort(portDefault );
+		this.settings.setPort(portDefault );*/
 	}
 	
 	public void configure(Shell parent) {
 			
-		final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+		/*final Shell dialog = DialogUtils.newDialog(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 		dialog.setLayout(new GridLayout());
 		dialog.setText(TuxGuitar.getProperty("gdp.settings.title"));
 		
@@ -124,11 +124,13 @@ public class GDPSettingsUtil {
 		dialog.setDefaultButton( buttonOK );
 		
 		DialogUtils.openDialog(dialog,DialogUtils.OPEN_STYLE_CENTER | DialogUtils.OPEN_STYLE_PACK | DialogUtils.OPEN_STYLE_WAIT);
+		*/
+	
 	}
 	
-	public void  setAvailablePorts(List av_ports){
+	/*public void  setAvailablePorts(List av_ports){
 		this.ports = av_ports;
-	}
+	}*/
 	
 	
 }
